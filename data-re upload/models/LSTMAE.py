@@ -28,7 +28,7 @@ class Decoder(nn.Module):
         self.dropout = dropout
         self.seq_len = seq_len
         self.use_act = use_act  # Parameter to control the last sigmoid activation - depends on the normalization used.
-        self.act = nn.Sigmoid()
+        self.act = nn.Tanh()
 
         self.lstm_dec = nn.LSTM(input_size=hidden_size, hidden_size=hidden_size, dropout=dropout, batch_first=True)
         self.fc = nn.Linear(hidden_size, input_size)
