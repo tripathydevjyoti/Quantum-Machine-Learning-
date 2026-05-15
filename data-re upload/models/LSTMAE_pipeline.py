@@ -150,3 +150,186 @@ def build_lstm_ae(
     )
     model = model.to(device)
     return model
+
+
+def train_lstm_ae(
+    model: LSTMAE,
+    train_loader: DataLoader,
+    val_loader: DataLoader,
+    n_epochs: int = 500,
+    learning_rate: float = 0.05,
+    device: Union[str, torch.device] = "cpu",
+    print_every: int = 10,
+) -> Tuple[ LSTMAE, Dict[str, object]]:
+    device = torch.device(device)
+
+    criterion = nn.MSELoss
+    optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
+
+    train_loss = []
+    val_loss = []
+
+    best_val_loss = float("inf")
+    best_model_state = None
+
+    for epoch in range(n_epochs):
+        model.train()
+        total_train_loss = 0.0
+
+        for X_batch, y_batch in train_loader:
+            X_batch = X_batch.to(device)
+            y_batch = y_batch.to(device)
+             
+            optimizer.zero_grad()
+            
+            X_reconstruct = model.eval(X_batch)
+            loss = criterion(X_reconstruct, y_batch)
+
+            loss.backward()
+            optimizer.step()
+
+            total_train_loss += loss.item() * X_batch.size(0)
+
+        avg_train_loss = total_train_loss / len(train_loader.dataset)
+
+        model.eval()
+        total_val_loss = 0.0
+
+        with torch.no_grad():
+            for X_batch, y_batch in val_loader:
+                X_batch = X_batch.to(device)
+                y_batch = y_batch.to(device)
+
+                X_reconstruct = model(X_batch)
+                loss = criterion(X_reconstruct, y_batch)
+                total_val_loss += loss.item() * X_batch.size(0) 
+
+            avg_val_loss = total_val_loss / len(val_loader.dataset)
+
+            train_loss.append(avg_train_loss)
+            val_loss.append(avg_val_loss)
+
+            if avg_val_loss < best_val_loss:
+                best_val_loss = avg_val_loss
+                best_model_state = copy.deepcopy(model.state_dict())
+            
+            if print_every is not None and print_every > 0:
+                if (epoch + 1) % print_every == 0:
+                    print(
+                        f"Epoch [{epoch + 1}/{n_epochs}]"
+                        f"Train Loss: {avg_train_loss}.6f"
+                        f"Val Loss:" {avg_val_loss}.6f "
+                    
+                    )
+    
+    if best_model_state is not None:
+        model.load_state_dict(best_model_state)
+
+        history = {
+            "train_loss": train_loss,
+            "val_loss": val_loss,
+            "best_val_loss": best_val_loss,
+        }
+
+        return model, history
+    
+
+def extract_latents(
+    model: LSTMAE,
+    X: Union[np.ndarray, torch.Tensor],
+    device: Union[str, torch.device],
+) -> np.ndarray:
+    device = torch.device(device)
+
+    if isinstance(X, np.ndarray):
+        X_tensor = torch.tensor(X, dtype = torch.float32)
+    else: 
+        X_tensor = X_float()
+
+    model.eval()
+    with torch.no_grad():
+        X_tensor = X_tensor.to(device)
+
+        x_enc_repeated_enc_repeated, _ = model.encoder(X_tensor)
+
+        z = x_enc_repeated_enc_repeated[:, 0, :]
+
+    return z.cpu().numpy()
+
+
+def get_reconstructions(
+    model: LSTMAE,
+    X: Union[np.ndarray, torch.Tensor],
+    device: Union[str, torch.device] = "cpu",
+) -> np.ndarray:
+    device = torch.device(device)
+
+    if isinstance(X, np.ndarray):
+        X_tensor = torch.tensor(X, dtype = torch.float32)
+    else:
+        X_tensor = X.float()
+
+    model.eval()
+    with torch.no_grad():
+        X_reconstruct = model.eval(X_tensor.to(device)).cpu().numpy()
+
+    return X_reconstruct
+
+def recontruct_series_from_windows(windows:  np.ndarray) -> np.ndarray:
+
+    num_windows = windows.shape[0]
+    window_size = windows.shape[0]
+
+    series_length = num_windows + window_size - 1
+
+    reconstruct = np.zeros(series_length, dtype = np.float32)
+    counts = np.zeros(series_length, dtype = np.float32)
+
+    for i in range(num_windows):
+        reconstruct[i:i + window_size] += windows[i, :, 0]
+        counts[i:i + window_size] += 1.0
+
+    reconstruct = reconstruct / counts
+
+    return reconstruct.reshape(-1,1)
+
+def save_checkpoint(
+        save_path: str,
+        model: LSTMAE,
+        scaler: MinMaxScaler,
+        config: LSTMAEConfig,
+        history: Dict[str, object],
+) -> None:
+    checkpoint = {
+        "model_state_dict": model.state_dict(),
+        "encoder_state_dict": model.encoder.state_dict(),
+        "scaler": scaler,
+        "config": asdict(config),
+        "history": history,
+    }
+    torch.save(checkpoint, save_path)
+
+
+def train_lstm_ae_latent_pipeline(
+    df: pd.DataFrame,
+    config: LSTMAEConfig,
+    fit_scaler_in_train: bool = True,
+) -> Dict[str, object]:
+    device = get_device(config.device)
+
+    data = prepare_windows_from_df(
+        df = df,
+        val_col = config.value_col,
+        window_size = config.window_size,
+        train_window_end = config.train_window_end,
+        scaler_feature_range=config.scaler_feature_range,
+        fit_scaler_in_train = fit_scaler_in_train,
+    )
+
+    train_loader, val_loader, X_train_torch, X_val_torch = make_ae_loaders(
+        X_train = data["X_tr"]
+    )
+
+
+
+
