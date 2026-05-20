@@ -1,4 +1,5 @@
 import copy
+from dataclasses import dataclass, asdict
 from typing import Dict, Optional, Tuple, Union
 
 import numpy as np
@@ -6,12 +7,15 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
+
 from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import DataLoader, TensorDataset
 
 from models.LSTMAE import LSTMAE
 
+
 ArrayLikeColumn = Union[int, str]
+
 
 @dataclass
 class LSTMAEConfig:
@@ -21,44 +25,48 @@ class LSTMAEConfig:
     train_window_end: int = 400
     batch_size: int = 64
     n_epochs: int = 500
-    learning_rate: float = 0.05
+    learning_rate: float = 0.001
     dropout_ratio: float = 0.0
-    scaler_feature_range: Tuple[float, float]
+    scaler_feature_range: Tuple[float, float] = (-1.0, 1.0)
     use_act: bool = False
     device: str = "cpu"
     save_path: Optional[str] = None
     print_every: int = 10
 
+
 def get_device(device: Optional[str] = None) -> torch.device:
     if device is not None:
         return torch.device(device)
-    
+
     if torch.backends.mps.is_available():
         return torch.device("mps")
+
     if torch.cuda.is_available():
         return torch.device("cuda")
-    return torch.device("cpu")
 
+    return torch.device("cpu")
 
 
 def extract_series(df: pd.DataFrame, value_col: ArrayLikeColumn) -> np.ndarray:
     if isinstance(value_col, int):
-        series = df.iloc[:,value_col].values.reshape(-1,1)
+        series = df.iloc[:, value_col].values.reshape(-1, 1)
     else:
-        series = df[value_col].values.reshape(-1,1)
-    
+        series = df[value_col].values.reshape(-1, 1)
+
     series = series.astype(np.float32)
     return series
 
+
 def series_to_Xy(arr: np.ndarray, window_size: int) -> Tuple[np.ndarray, np.ndarray]:
-    X =[]
+    X = []
     y = []
 
     for i in range(len(arr) - window_size):
         X.append(arr[i:i + window_size])
-        y.append(arr[i +window_size])
+        y.append(arr[i + window_size])
 
-    return np.ndarray(X, dtype=np.float32), np.ndarray(y, dtype=np.float32)
+    return np.array(X, dtype=np.float32), np.array(y, dtype=np.float32)
+
 
 def fit_scaler(
     series: np.ndarray,
@@ -66,11 +74,21 @@ def fit_scaler(
     window_size: int,
     feature_range: Tuple[float, float],
 ) -> MinMaxScaler:
+    """
+    Fits scaler only on the portion used for training windows and training labels.
 
+    If train_window_end = 400 and window_size = 20,
+    training windows include raw indices up to approximately 419,
+    and y includes the next point.
+    """
     scaler = MinMaxScaler(feature_range=feature_range)
+
     fit_end = min(train_window_end + window_size + 1, len(series))
+
     scaler.fit(series[:fit_end])
+
     return scaler
+
 
 def prepare_windows_from_df(
     df: pd.DataFrame,
@@ -80,21 +98,21 @@ def prepare_windows_from_df(
     scaler_feature_range: Tuple[float, float] = (-1.0, 1.0),
     fit_scaler_in_train: bool = True,
 ) -> Dict[str, object]:
-    
     series = extract_series(df, value_col)
 
     if fit_scaler_in_train:
         scaler = fit_scaler(
-            series = series,
-            train_window_end = train_window_end,
-            window_size = window_size,
-            feature_range = scaler_feature_range,
-            )
+            series=series,
+            train_window_end=train_window_end,
+            window_size=window_size,
+            feature_range=scaler_feature_range,
+        )
     else:
-        scaler = MinMaxScaler(feature_range = scaler_feature_range)
+        scaler = MinMaxScaler(feature_range=scaler_feature_range)
         scaler.fit(series)
 
     series_scaled = scaler.transform(series).astype(np.float32)
+
     X_all, y_all = series_to_Xy(series_scaled, window_size)
 
     X_train = X_all[:train_window_end]
@@ -115,40 +133,51 @@ def prepare_windows_from_df(
         "y_val": y_val,
     }
 
+
 def make_ae_loaders(
-        X_train: np.ndarray,
-        X_val: np.ndarray,
-        batch_size: int = 64,
+    X_train: np.ndarray,
+    X_val: np.ndarray,
+    batch_size: int = 64,
 ) -> Tuple[DataLoader, DataLoader, torch.Tensor, torch.Tensor]:
-    
-    X_train_torch = torch.tensor(X_train, dtype = np.float32)
-    X_val_torch = torch.tensor(X_val, dtype = np.float32)
+    X_train_torch = torch.tensor(X_train, dtype=torch.float32)
+    X_val_torch = torch.tensor(X_val, dtype=torch.float32)
 
     train_dataset = TensorDataset(X_train_torch, X_train_torch)
     val_dataset = TensorDataset(X_val_torch, X_val_torch)
 
-    train_loader = DataLoader(train_dataset, batch_size = batch_size, shuffle = True)
-    val_loader = DataLoader(val_dataset, batch_size = batch_size, shuffle = False)
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+    )
+
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+    )
 
     return train_loader, val_loader, X_train_torch, X_val_torch
 
+
 def build_lstm_ae(
-        input_size: int,
-        latent_dim: int,
-        dropout_ratio: float,
-        window_size: int,
-        use_act: bool,
-        device: torch.device,
+    input_size: int,
+    latent_dim: int,
+    dropout_ratio: float,
+    window_size: int,
+    use_act: bool,
+    device: torch.device,
 ) -> LSTMAE:
-    
     model = LSTMAE(
-        input_size = input_size,
-        hidden_size = latent_dim,
-        dropout_ratio = dropout_ratio,
-        seq_len = window_size,
-        use_act = use_act,
+        input_size=input_size,
+        hidden_size=latent_dim,
+        dropout_ratio=dropout_ratio,
+        seq_len=window_size,
+        use_act=use_act,
     )
+
     model = model.to(device)
+
     return model
 
 
@@ -157,14 +186,14 @@ def train_lstm_ae(
     train_loader: DataLoader,
     val_loader: DataLoader,
     n_epochs: int = 500,
-    learning_rate: float = 0.05,
+    learning_rate: float = 0.001,
     device: Union[str, torch.device] = "cpu",
     print_every: int = 10,
-) -> Tuple[ LSTMAE, Dict[str, object]]:
+) -> Tuple[LSTMAE, Dict[str, object]]:
     device = torch.device(device)
 
-    criterion = nn.MSELoss
-    optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
+    criterion = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
     train_loss = []
     val_loss = []
@@ -179,10 +208,11 @@ def train_lstm_ae(
         for X_batch, y_batch in train_loader:
             X_batch = X_batch.to(device)
             y_batch = y_batch.to(device)
-             
+
             optimizer.zero_grad()
-            
-            X_reconstruct = model.eval(X_batch)
+
+            X_reconstruct = model(X_batch)
+
             loss = criterion(X_reconstruct, y_batch)
 
             loss.backward()
@@ -201,58 +231,60 @@ def train_lstm_ae(
                 y_batch = y_batch.to(device)
 
                 X_reconstruct = model(X_batch)
+
                 loss = criterion(X_reconstruct, y_batch)
-                total_val_loss += loss.item() * X_batch.size(0) 
 
-            avg_val_loss = total_val_loss / len(val_loader.dataset)
+                total_val_loss += loss.item() * X_batch.size(0)
 
-            train_loss.append(avg_train_loss)
-            val_loss.append(avg_val_loss)
+        avg_val_loss = total_val_loss / len(val_loader.dataset)
 
-            if avg_val_loss < best_val_loss:
-                best_val_loss = avg_val_loss
-                best_model_state = copy.deepcopy(model.state_dict())
-            
-            if print_every is not None and print_every > 0:
-                if (epoch + 1) % print_every == 0:
-                    print(
-                        f"Epoch [{epoch + 1}/{n_epochs}]"
-                        f"Train Loss: {avg_train_loss}.6f"
-                        f"Val Loss:" {avg_val_loss}.6f "
-                    
-                    )
-    
+        train_loss.append(avg_train_loss)
+        val_loss.append(avg_val_loss)
+
+        if avg_val_loss < best_val_loss:
+            best_val_loss = avg_val_loss
+            best_model_state = copy.deepcopy(model.state_dict())
+
+        if print_every is not None and print_every > 0:
+            if (epoch + 1) % print_every == 0:
+                print(
+                    f"Epoch [{epoch + 1}/{n_epochs}] "
+                    f"Train Loss: {avg_train_loss:.6f} "
+                    f"Val Loss: {avg_val_loss:.6f}"
+                )
+
     if best_model_state is not None:
         model.load_state_dict(best_model_state)
 
-        history = {
-            "train_loss": train_loss,
-            "val_loss": val_loss,
-            "best_val_loss": best_val_loss,
-        }
+    history = {
+        "train_loss": train_loss,
+        "val_loss": val_loss,
+        "best_val_loss": best_val_loss,
+    }
 
-        return model, history
-    
+    return model, history
+
 
 def extract_latents(
     model: LSTMAE,
     X: Union[np.ndarray, torch.Tensor],
-    device: Union[str, torch.device],
+    device: Union[str, torch.device] = "cpu",
 ) -> np.ndarray:
     device = torch.device(device)
 
     if isinstance(X, np.ndarray):
-        X_tensor = torch.tensor(X, dtype = torch.float32)
-    else: 
-        X_tensor = X_float()
+        X_tensor = torch.tensor(X, dtype=torch.float32)
+    else:
+        X_tensor = X.float()
 
     model.eval()
+
     with torch.no_grad():
         X_tensor = X_tensor.to(device)
 
-        x_enc_repeated_enc_repeated, _ = model.encoder(X_tensor)
+        x_enc_repeated, _ = model.encoder(X_tensor)
 
-        z = x_enc_repeated_enc_repeated[:, 0, :]
+        z = x_enc_repeated[:, 0, :]
 
     return z.cpu().numpy()
 
@@ -265,40 +297,52 @@ def get_reconstructions(
     device = torch.device(device)
 
     if isinstance(X, np.ndarray):
-        X_tensor = torch.tensor(X, dtype = torch.float32)
+        X_tensor = torch.tensor(X, dtype=torch.float32)
     else:
         X_tensor = X.float()
 
     model.eval()
+
     with torch.no_grad():
-        X_reconstruct = model.eval(X_tensor.to(device)).cpu().numpy()
+        X_reconstruct = model(X_tensor.to(device)).cpu().numpy()
 
     return X_reconstruct
 
-def recontruct_series_from_windows(windows:  np.ndarray) -> np.ndarray:
 
+def reconstruct_series_from_windows(windows: np.ndarray) -> np.ndarray:
+    """
+    Converts overlapping windows back into one continuous time series
+    by averaging overlapping values.
+
+    This matches the windowing function:
+        for i in range(len(arr) - window_size)
+
+    Therefore, the recovered series length from X windows is:
+        num_windows + window_size - 1
+    """
     num_windows = windows.shape[0]
-    window_size = windows.shape[0]
+    window_size = windows.shape[1]
 
     series_length = num_windows + window_size - 1
 
-    reconstruct = np.zeros(series_length, dtype = np.float32)
-    counts = np.zeros(series_length, dtype = np.float32)
+    reconstructed = np.zeros(series_length, dtype=np.float32)
+    counts = np.zeros(series_length, dtype=np.float32)
 
     for i in range(num_windows):
-        reconstruct[i:i + window_size] += windows[i, :, 0]
+        reconstructed[i:i + window_size] += windows[i, :, 0]
         counts[i:i + window_size] += 1.0
 
-    reconstruct = reconstruct / counts
+    reconstructed = reconstructed / counts
 
-    return reconstruct.reshape(-1,1)
+    return reconstructed.reshape(-1, 1)
+
 
 def save_checkpoint(
-        save_path: str,
-        model: LSTMAE,
-        scaler: MinMaxScaler,
-        config: LSTMAEConfig,
-        history: Dict[str, object],
+    save_path: str,
+    model: LSTMAE,
+    scaler: MinMaxScaler,
+    config: LSTMAEConfig,
+    history: Dict[str, object],
 ) -> None:
     checkpoint = {
         "model_state_dict": model.state_dict(),
@@ -307,6 +351,7 @@ def save_checkpoint(
         "config": asdict(config),
         "history": history,
     }
+
     torch.save(checkpoint, save_path)
 
 
@@ -318,18 +363,177 @@ def train_lstm_ae_latent_pipeline(
     device = get_device(config.device)
 
     data = prepare_windows_from_df(
-        df = df,
-        val_col = config.value_col,
-        window_size = config.window_size,
-        train_window_end = config.train_window_end,
+        df=df,
+        value_col=config.value_col,
+        window_size=config.window_size,
+        train_window_end=config.train_window_end,
         scaler_feature_range=config.scaler_feature_range,
-        fit_scaler_in_train = fit_scaler_in_train,
+        fit_scaler_in_train=fit_scaler_in_train,
     )
 
     train_loader, val_loader, X_train_torch, X_val_torch = make_ae_loaders(
-        X_train = data["X_tr"]
+        X_train=data["X_train"],
+        X_val=data["X_val"],
+        batch_size=config.batch_size,
     )
 
+    input_size = data["X_train"].shape[-1]
+
+    model = build_lstm_ae(
+        input_size=input_size,
+        latent_dim=config.latent_dim,
+        dropout_ratio=config.dropout_ratio,
+        window_size=config.window_size,
+        use_act=config.use_act,
+        device=device,
+    )
+
+    model, history = train_lstm_ae(
+        model=model,
+        train_loader=train_loader,
+        val_loader=val_loader,
+        n_epochs=config.n_epochs,
+        learning_rate=config.learning_rate,
+        device=device,
+        print_every=config.print_every,
+    )
+
+    z_train = extract_latents(
+        model=model,
+        X=data["X_train"],
+        device=device,
+    )
+
+    z_val = extract_latents(
+        model=model,
+        X=data["X_val"],
+        device=device,
+    )
+
+    z_all = extract_latents(
+        model=model,
+        X=data["X_all"],
+        device=device,
+    )
+
+    X_train_reconstructed = get_reconstructions(
+        model=model,
+        X=data["X_train"],
+        device=device,
+    )
+
+    X_val_reconstructed = get_reconstructions(
+        model=model,
+        X=data["X_val"],
+        device=device,
+    )
+
+    if config.save_path is not None:
+        save_checkpoint(
+            save_path=config.save_path,
+            model=model,
+            scaler=data["scaler"],
+            config=config,
+            history=history,
+        )
+
+    results = {
+        **data,
+        "model": model,
+        "encoder": model.encoder,
+        "history": history,
+        "X_train_torch": X_train_torch,
+        "X_val_torch": X_val_torch,
+        "z_train": z_train,
+        "z_val": z_val,
+        "z_all": z_all,
+        "X_train_reconstructed": X_train_reconstructed,
+        "X_val_reconstructed": X_val_reconstructed,
+        "device": device,
+        "config": config,
+    }
+
+    return results
 
 
+def plot_training_history(history: Dict[str, object]) -> None:
+    plt.figure(figsize=(10, 5))
+    plt.plot(history["train_loss"], label="Train Loss")
+    plt.plot(history["val_loss"], label="Validation Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("MSE Loss")
+    plt.title("LSTM Autoencoder Training Loss")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
+
+def plot_reconstructed_series(
+    original_windows: np.ndarray,
+    reconstructed_windows: np.ndarray,
+    scaler: MinMaxScaler,
+    title: str = "Original vs Reconstructed Series",
+) -> None:
+    original_scaled_series = reconstruct_series_from_windows(original_windows)
+    reconstructed_scaled_series = reconstruct_series_from_windows(reconstructed_windows)
+
+    original_series = scaler.inverse_transform(original_scaled_series)
+    reconstructed_series = scaler.inverse_transform(reconstructed_scaled_series)
+
+    plt.figure(figsize=(12, 5))
+    plt.plot(original_series, label="Original Series")
+    plt.plot(reconstructed_series, label="Reconstructed Series")
+    plt.xlabel("Original Time Step")
+    plt.ylabel("Original Scale Value")
+    plt.title(title)
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
+def plot_latent_trajectories(
+    z: np.ndarray,
+    title: str = "Latent Dimensions Across Windows",
+) -> None:
+    plt.figure(figsize=(12, 6))
+
+    for i in range(z.shape[1]):
+        plt.plot(z[:, i], label=f"Latent dim {i + 1}")
+
+    plt.xlabel("Window Index")
+    plt.ylabel("Latent Value")
+    plt.title(title)
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
+def load_lstm_ae_checkpoint(
+    checkpoint_path: str,
+    device: Union[str, torch.device] = "cpu",
+) -> Dict[str, object]:
+    device = torch.device(device)
+
+    checkpoint = torch.load(checkpoint_path, map_location=device)
+
+    config = LSTMAEConfig(**checkpoint["config"])
+
+    model = build_lstm_ae(
+        input_size=1,
+        latent_dim=config.latent_dim,
+        dropout_ratio=config.dropout_ratio,
+        window_size=config.window_size,
+        use_act=config.use_act,
+        device=device,
+    )
+
+    model.load_state_dict(checkpoint["model_state_dict"])
+    model.eval()
+
+    return {
+        "model": model,
+        "encoder": model.encoder,
+        "scaler": checkpoint["scaler"],
+        "config": config,
+        "history": checkpoint["history"],
+    }
