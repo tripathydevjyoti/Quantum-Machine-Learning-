@@ -83,7 +83,7 @@ def fit_scaler(
     """
     scaler = MinMaxScaler(feature_range=feature_range)
 
-    fit_end = min(train_window_end + window_size + 1, len(series))
+    fit_end = min(train_window_end + window_size, len(series))
 
     scaler.fit(series[:fit_end])
 
