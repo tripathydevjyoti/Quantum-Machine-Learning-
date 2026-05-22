@@ -9,7 +9,7 @@ The main notebook, `hybrid qnn.ipynb`, builds a pipeline that first trains an LS
 The notebook includes:
 
 - Loading and splitting the time-series dataset
-- Training an LSTM autoencoder using the utilities in `models/LSTMAE_pipeline.py`
+- Training an LSTM autoencoder using the utilities in `data-re upload/models/LSTMAE_pipeline.py`
 - Extracting latent vectors from the trained LSTM encoder
 - Mapping the latent vectors to quantum rotation angles
 - Building a PennyLane-based data re-uploading QNN
@@ -18,7 +18,7 @@ The notebook includes:
 
 ## Repository Notes
 
-The `models/` folder contains the LSTM autoencoder pipeline and related helper functions used by the main notebook.
+The `data-re upload/models/` folder contains the LSTM autoencoder pipeline and related helper functions used by the main notebook.
 
 The data re-uploading circuit is implemented using repeated `RY` input encoding layers and trainable rotational ansatz layers with nearest-neighbor/ring CNOT entanglement.
 
@@ -26,9 +26,9 @@ The data re-uploading circuit is implemented using repeated `RY` input encoding 
 
 🚧 This work is currently in progress.
 
-The next stage is focused on running the quantum circuit on noisy simulators and eventually hardware backends. Initial benchmark plots and experimental outputs are being collected in the qubit-specific result folders, for example files such as:
+The next stage is focused on running the quantum circuit on noisy simulators and  hardware backends. Initial benchmark plots and experimental outputs are being collected in the qubit-specific result folders, for example files such as:
 
-- `spsa_predictions_and_losses_3_qubit`
+- `2 qubit circuits/spsa_predictions_and_losses_3_qubit.pdf`
 - related SPSA prediction/loss plots in the two-qubit and three-qubit experiment folders
 
 These benchmarks are intended to compare ideal simulation, noisy simulation, and hardware-aware training behavior.
