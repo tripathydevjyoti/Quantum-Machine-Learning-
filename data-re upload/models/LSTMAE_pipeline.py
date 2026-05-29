@@ -17,6 +17,66 @@ from models.LSTMAE import LSTMAE
 ArrayLikeColumn = Union[int, str]
 
 
+class FixedRangeScaler:
+    """
+    Fixed physical-range scaler.
+
+    Example for rainfall:
+        0 mm   -> -1
+        200 mm ->  0
+        400 mm ->  1
+
+    If clip=False, values above fixed_max are allowed to scale above 1.
+    This preserves extreme rainfall information.
+    """
+
+    def __init__(
+        self,
+        fixed_min: float,
+        fixed_max: float,
+        feature_range: Tuple[float, float] = (-1.0, 1.0),
+        clip: bool = False,
+    ):
+        if fixed_max <= fixed_min:
+            raise ValueError("fixed_max must be greater than fixed_min.")
+
+        self.fixed_min = float(fixed_min)
+        self.fixed_max = float(fixed_max)
+        self.feature_range = feature_range
+        self.clip = clip
+
+        self.data_min_ = np.array([self.fixed_min], dtype=np.float32)
+        self.data_max_ = np.array([self.fixed_max], dtype=np.float32)
+
+    def fit(self, x):
+        return self
+
+    def transform(self, x):
+        x = np.asarray(x, dtype=np.float32)
+
+        a, b = self.feature_range
+
+        x_scaled = a + (x - self.fixed_min) * (b - a) / (
+            self.fixed_max - self.fixed_min
+        )
+
+        if self.clip:
+            x_scaled = np.clip(x_scaled, a, b)
+
+        return x_scaled.astype(np.float32)
+
+    def inverse_transform(self, x_scaled):
+        x_scaled = np.asarray(x_scaled, dtype=np.float32)
+
+        a, b = self.feature_range
+
+        x = self.fixed_min + (x_scaled - a) * (
+            self.fixed_max - self.fixed_min
+        ) / (b - a)
+
+        return x.astype(np.float32)
+
+
 @dataclass
 class LSTMAEConfig:
     value_col: ArrayLikeColumn = 4
@@ -27,7 +87,14 @@ class LSTMAEConfig:
     n_epochs: int = 500
     learning_rate: float = 0.001
     dropout_ratio: float = 0.0
+
+    # Scaling config
+    scaler_type: str = "minmax_train"
     scaler_feature_range: Tuple[float, float] = (-1.0, 1.0)
+    fixed_min: float = 0.0
+    fixed_max: float = 400.0
+    clip_fixed_scaler: bool = False
+
     use_act: bool = False
     device: str = "cpu"
     save_path: Optional[str] = None
@@ -97,19 +164,37 @@ def prepare_windows_from_df(
     train_window_end: int = 400,
     scaler_feature_range: Tuple[float, float] = (-1.0, 1.0),
     fit_scaler_in_train: bool = True,
+    scaler_type: str = "minmax_train",
+    fixed_min: float = 0.0,
+    fixed_max: float = 400.0,
+    clip_fixed_scaler: bool = False,
 ) -> Dict[str, object]:
     series = extract_series(df, value_col)
 
-    if fit_scaler_in_train:
-        scaler = fit_scaler(
-            series=series,
-            train_window_end=train_window_end,
-            window_size=window_size,
+    if scaler_type == "fixed_range":
+        scaler = FixedRangeScaler(
+            fixed_min=fixed_min,
+            fixed_max=fixed_max,
             feature_range=scaler_feature_range,
+            clip=clip_fixed_scaler,
         )
+
+    elif scaler_type == "minmax_train":
+        if fit_scaler_in_train:
+            scaler = fit_scaler(
+                series=series,
+                train_window_end=train_window_end,
+                window_size=window_size,
+                feature_range=scaler_feature_range,
+            )
+        else:
+            scaler = MinMaxScaler(feature_range=scaler_feature_range)
+            scaler.fit(series)
+
     else:
-        scaler = MinMaxScaler(feature_range=scaler_feature_range)
-        scaler.fit(series)
+        raise ValueError(
+            "Invalid scaler_type. Use 'minmax_train' or 'fixed_range'."
+        )
 
     series_scaled = scaler.transform(series).astype(np.float32)
 
@@ -340,7 +425,7 @@ def reconstruct_series_from_windows(windows: np.ndarray) -> np.ndarray:
 def save_checkpoint(
     save_path: str,
     model: LSTMAE,
-    scaler: MinMaxScaler,
+    scaler: Union[MinMaxScaler, FixedRangeScaler],
     config: LSTMAEConfig,
     history: Dict[str, object],
 ) -> None:
@@ -369,6 +454,10 @@ def train_lstm_ae_latent_pipeline(
         train_window_end=config.train_window_end,
         scaler_feature_range=config.scaler_feature_range,
         fit_scaler_in_train=fit_scaler_in_train,
+        scaler_type=config.scaler_type,
+        fixed_min=config.fixed_min,
+        fixed_max=config.fixed_max,
+        clip_fixed_scaler=config.clip_fixed_scaler,
     )
 
     train_loader, val_loader, X_train_torch, X_val_torch = make_ae_loaders(
@@ -471,7 +560,7 @@ def plot_training_history(history: Dict[str, object]) -> None:
 def plot_reconstructed_series(
     original_windows: np.ndarray,
     reconstructed_windows: np.ndarray,
-    scaler: MinMaxScaler,
+    scaler: Union[MinMaxScaler, FixedRangeScaler],
     title: str = "Original vs Reconstructed Series",
 ) -> None:
     original_scaled_series = reconstruct_series_from_windows(original_windows)
