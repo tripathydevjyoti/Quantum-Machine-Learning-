@@ -1,50 +1,119 @@
-# Hybrid QNN Time-Series Forecasting
+# Hybrid Quantum-Classical Neural Network for Time-Series Forecasting
 
-This repository contains an initial hybrid quantum-classical neural network workflow for time-series forecasting.
+This repository contains a hybrid quantum-classical machine learning workflow for time-series forecasting. The project combines an LSTM autoencoder for temporal representation learning with a PennyLane-based data re-uploading quantum neural network for next-step prediction.
 
-The main notebook, `hybrid qnn.ipynb`, builds a pipeline that first trains an LSTM autoencoder on the input time series and then uses the learned latent representation as input angles for a data re-uploading quantum neural network.
+The main demonstration notebook is:
 
-## Main Workflow
+```text
+demo_notebooks/hybrid_qnn_demo.ipynb
+```
 
-The notebook includes:
+## Project Overview
 
-- Loading and splitting the time-series dataset
-- Training an LSTM autoencoder using the utilities in `data-re upload/models/LSTMAE_pipeline.py`
-- Extracting latent vectors from the trained LSTM encoder
-- Mapping the latent vectors to quantum rotation angles
-- Building a PennyLane-based data re-uploading QNN
-- Training a hybrid model with quantum expectation values followed by a small classical output layer
-- Plotting training loss, validation predictions, and basic validation metrics
+The workflow is designed to study whether compressed temporal features learned by a classical sequence model can be used as informative input angles for a quantum neural network.
 
-## Repository Notes
+The pipeline follows these steps:
 
-The `data-re upload/models/` folder contains the LSTM autoencoder pipeline and related helper functions used by the main notebook.
+1. Load and split the time-series dataset chronologically.
+2. Train an LSTM autoencoder to reconstruct fixed-length input windows.
+3. Extract latent vectors from the trained LSTM encoder.
+4. Map the latent vectors to quantum rotation angles.
+5. Feed the angles into a data re-uploading quantum circuit.
+6. Train a hybrid quantum-classical regressor using quantum expectation values followed by a small classical output layer.
+7. Evaluate forecasting performance using training, validation, and test predictions.
 
-The data re-uploading circuit is implemented using repeated `RY` input encoding layers and trainable rotational ansatz layers with nearest-neighbor/ring CNOT entanglement.
+## Main Components
 
-## Current Status
+### LSTM Autoencoder
 
-🚧 This work is currently in progress.
+The LSTM autoencoder is used as a temporal feature extractor. It learns a compressed latent representation of each input time-series window. The reusable model and helper functions are located in:
 
-The next stage is focused on running the quantum circuit on noisy simulators and  hardware backends. Initial benchmark plots and experimental outputs are being collected in the qubit-specific result folders, for example files such as:
+```text
+data_reupload/models/
+```
 
-- `2 qubit circuits/spsa_predictions_and_losses_3_qubit.pdf`
-- related SPSA prediction/loss plots in the two-qubit and three-qubit experiment folders
+Key functionality includes:
 
-These benchmarks are intended to compare ideal simulation, noisy simulation, and hardware-aware training behavior.
+* Time-series window creation
+* Fixed-range and MinMax scaling utilities
+* LSTM autoencoder training
+* Latent vector extraction
+* Reconstruction plotting
+* Checkpoint saving and loading
+
+### Data Re-Uploading Quantum Neural Network
+
+The quantum model is implemented using PennyLane. The circuit repeatedly applies:
+
+* `RY` angle encoding layers for the latent features
+* trainable single-qubit rotational gates
+* nearest-neighbor/ring CNOT entanglement
+* Pauli-Z expectation value measurements
+
+The quantum expectation values are passed into a small classical output layer for final regression.
+
+## Repository Structure
+
+```text
+Quantum-Machine-Learning-/
+├── demo_notebooks/
+│   └── hybrid_qnn_demo.ipynb
+│
+├── data/
+│   └── raw/
+│
+├── data_reupload/
+│   ├── models/
+│   │   ├── LSTMAE.py
+│   │   └── LSTMAE_pipeline.py
+│   │
+│   ├── experiments/
+│   │   ├── tune_lstm_ae.ipynb
+│   │   └── qnn_depth_sweep.ipynb
+│   │
+│   ├── scripts/
+│   ├── checkpoints/
+│   └── results/
+│
+├── old_experiments/
+├── requirements.txt
+└── README.md
+```
+
+## Current Research Direction
+
+This project is actively evolving. The current focus is on scaling the experiments beyond the initial demonstration notebook.
+
+Ongoing work includes:
+
+* Hyperparameter tuning of the LSTM autoencoder
+* Studying how prediction accuracy changes with data re-uploading circuit depth
+* Repeating the depth analysis for different numbers of qubits
+* Matching the LSTM latent dimension to the number of qubits
+* Preparing HPC-compatible scripts for running larger experiment grids
+* Extending the workflow to noisy simulators and hardware-aware training methods
+
+The broader goal is to compare ideal simulation, noisy simulation, and hardware-aware training behavior for hybrid QNN time-series forecasting.
 
 ## Requirements
 
-Core libraries used in the notebook include:
+Core libraries used in this project include:
 
-- Python
-- NumPy
-- pandas
-- PyTorch
-- PennyLane
-- Qiskit
-- matplotlib
+* Python
+* NumPy
+* pandas
+* scikit-learn
+* PyTorch
+* PennyLane
+* Qiskit
+* matplotlib
+
+Install dependencies with:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Status
 
-This repository is experimental and actively evolving. Code structure, results, and documentation may change as the noisy-simulator and hardware experiments are added.
+This repository is an active research and experimentation project. Code structure, experiments, and results may continue to change as the QNN depth-sweep, noisy-simulator, and hardware-oriented workflows are developed.
