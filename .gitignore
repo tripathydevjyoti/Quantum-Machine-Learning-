@@ -1,1 +1,24 @@
-/venv
+# Python cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+.venv/
+
+# macOS
+.DS_Store
+
+# Generated model artifacts
+*.pth
+*.pt
+*.npz
+
+# HPC / log outputs
+*.log
+slurm-*.out
+
+# Raw generated experiment outputs
+data_reupload/checkpoints/
+data_reupload/results/
