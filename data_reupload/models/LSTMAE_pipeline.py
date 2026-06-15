@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import DataLoader, TensorDataset
 
-from models.LSTMAE import LSTMAE
+from data_reupload.models.LSTMAE import LSTMAE
 
 
 ArrayLikeColumn = Union[int, str]
