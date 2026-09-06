@@ -54,7 +54,7 @@ After the final layer, the 14 local Pauli-\(Z\) expectation values are passed to
 </p>
 
 <p align="center">
-  <em>Hybrid forecasting architecture, expanded reuploading layer, and five encoding choices. Click the figure to open the publication-quality PDF.</em>
+  <em>Hybrid forecasting architecture, expanded reuploading layer, and five encoding choices.</em>
 </p>
 
 ## Research question
