@@ -46,7 +46,7 @@ After the final layer, the 14 local Pauli-\(Z\) expectation values are passed to
 <p align="center">
   <a href="results/figures/figure00_qnn_architecture.pdf">
     <img
-      src="results/figures/figure00_qnn_architecture.png"
+      src="results/figures/figure00_qnn_architecture.pdf"
       alt="Hybrid 14-qubit data-reuploading QNN architecture"
       width="100%"
     >
