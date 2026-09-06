@@ -48,9 +48,10 @@ slurm-*.err
 *.tgz
 *.zip
 
-# Raw datasets are obtained separately
+# Raw datasets are excluded by default; the authorized study dataset is tracked.
 data/raw/*
 !data/raw/README.md
+!data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv
 
 # Existing generated experiment directories
 data_reupload/checkpoints/
