@@ -1,0 +1,7 @@
+numpy==1.26.4
+pandas
+scikit-learn
+matplotlib
+torch
+pennylane
+pennylane-lightning

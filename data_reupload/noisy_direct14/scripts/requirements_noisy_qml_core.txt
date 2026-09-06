@@ -1,0 +1,13 @@
+# Core Linux environment for the noisy direct-QNN HPC workflow.
+# Torch is installed separately from the official PyTorch CPU wheel index.
+
+numpy==1.26.4
+pandas==3.0.2
+scipy==1.13.1
+autoray==0.8.2
+rustworkx==0.17.1
+pennylane==0.44.1
+PennyLane-qiskit==0.44.1
+qiskit==2.2.3
+qiskit-aer==0.17.2
+qiskit-ibm-runtime==0.45.1

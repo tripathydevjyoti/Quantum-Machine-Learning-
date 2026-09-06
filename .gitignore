@@ -1,24 +1,58 @@
-# Python cache
+# Operating-system and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python bytecode and caches
 __pycache__/
-*.pyc
-.ipynb_checkpoints/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
 # Virtual environments
-venv/
 .venv/
+venv/
+venv_*/
+env/
 
-# macOS
-.DS_Store
+# Jupyter
+.ipynb_checkpoints/
 
-# Generated model artifacts
-*.pth
+# Model checkpoints and generated numerical arrays
 *.pt
+*.pth
+*.pkl
+*.npy
 *.npz
 
-# HPC / log outputs
+# Logs and scheduler output
 *.log
+*.out
+*.err
 slurm-*.out
+slurm-*.err
+**/logs/
 
-# Raw generated experiment outputs
+# Local runtime caches and temporary files
+.cache/
+.tmp/
+
+# Temporary and archived copies
+*.backup
+*.before_*
+*.tar.gz
+*.tgz
+*.zip
+
+# Raw datasets are excluded by default; the authorized study dataset is tracked.
+data/raw/*
+!data/raw/README.md
+!data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv
+
+# Existing generated experiment directories
 data_reupload/checkpoints/
 data_reupload/results/

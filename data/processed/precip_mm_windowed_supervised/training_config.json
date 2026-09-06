@@ -1,0 +1,124 @@
+{
+  "experiment": {
+    "name": "precip_mm_one_step_forecasting",
+    "description": "Shared training protocol for classical models compared with the QML precipitation forecasting experiments."
+  },
+
+  "dataset": {
+    "target_column": "precip_mm",
+    "n_raw_observations": 539,
+    "window_length": 14,
+    "forecast_horizon": 1,
+    "input_definition": "[y[t-14], ..., y[t-1]]",
+    "target_definition": "y[t]"
+  },
+
+  "splits": {
+    "train": {
+      "n_samples": 350,
+      "target_index_start": 14,
+      "target_index_end": 363
+    },
+    "validation": {
+      "n_samples": 70,
+      "target_index_start": 364,
+      "target_index_end": 433
+    },
+    "test": {
+      "n_samples": 105,
+      "target_index_start": 434,
+      "target_index_end": 538
+    }
+  },
+
+  "target_scaling": {
+    "used_in_qnn_training": true,
+    "physical_range_mm": [0.0, 350.0],
+    "scaled_range": [-1.0, 1.0],
+    "forward_transform": "y_scaled = 2*y/350 - 1",
+    "inverse_transform": "y_mm = 175*(y_scaled + 1)",
+    "output_activation": "tanh"
+  },
+
+  "training": {
+    "optimizer": "Adam",
+    "learning_rate": 0.01,
+    "loss": "mean_squared_error",
+    "batch_size": 16,
+    "epochs": 100,
+    "training_batch_shuffle": true,
+    "validation_shuffle": false,
+    "test_shuffle": false,
+    "checkpoint_selection": "minimum validation loss"
+  },
+
+  "random_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+
+  "depths": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+
+  "evaluation": {
+    "primary_metric": "RMSE",
+    "evaluation_units": "precip_mm",
+    "metrics": [
+      "RMSE",
+      "MAE",
+      "bias",
+      "Pearson correlation",
+      "Spearman correlation",
+      "KGE",
+      "NSE",
+      "amplitude ratio",
+      "FFT cosine similarity",
+      "12-step seasonal-band power error",
+      "2-to-6-step short-period band power error"
+    ],
+    "reporting_across_seeds": "mean and sample standard deviation across seeds 42-46"
+  },
+
+  "preprocessing_rules": {
+    "raw_dataset_files_are_unscaled": true,
+    "fit_all_learned_preprocessing_on_training_data_only": true,
+    "apply_training_fitted_preprocessing_unchanged_to_validation": true,
+    "apply_training_fitted_preprocessing_unchanged_to_test": true,
+    "do_not_use_validation_or_test_data_to_fit_scalers": true
+  },
+
+  "classical_comparison_guidance": {
+    "required_to_match": [
+      "train/validation/test split",
+      "14-step input window",
+      "one-step forecast horizon",
+      "random seeds",
+      "100 training epochs",
+      "batch size 16",
+      "Adam optimizer",
+      "learning rate 0.01",
+      "MSE training objective",
+      "validation-based checkpoint selection",
+      "target scaling when directly matching QNN training",
+      "evaluation on raw precip_mm units"
+    ],
+    "model_specific_components": [
+      "architecture",
+      "hidden dimension",
+      "number of layers",
+      "weight initialization",
+      "dropout",
+      "architecture-specific regularization"
+    ],
+    "note": "Architecture-specific choices should be reported explicitly. They do not need to mimic quantum-circuit-specific operations."
+  }
+}
