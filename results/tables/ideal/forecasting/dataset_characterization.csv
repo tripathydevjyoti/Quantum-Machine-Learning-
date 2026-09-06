@@ -1,0 +1,2 @@
+csv_path,value_column_index,value_column_name,n_observations,cdf_reference_n,cdf_reference_start,cdf_reference_end,acf_lag_1,acf_lag_6,acf_lag_12,acf_lag_24,dominant_training_fft_period
+data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv,4,precip_mm,539,364,0,363,0.545432766930918,-0.5102145083709492,0.5143760489463706,0.5498407061240194,12.133333333333331
