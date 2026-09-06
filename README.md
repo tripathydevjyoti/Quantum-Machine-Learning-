@@ -8,22 +8,23 @@ The associated manuscript is in preparation. Publication identifiers and the fin
 
 The forecasting models operate directly on 14-step input windows using 14-qubit data-reuploading circuits. The repository contains five encoding families:
 
-- `RY` baseline encoding
-- same-scalar `RX-RY-RZ` encoding
-- fixed seasonal-meridian encoding
-- learnable seasonal-CDF encoding
-- learnable seasonal-CDF encoding with an additional `RZ` component
+* `RY` baseline encoding
+* same-scalar `RX-RY-RZ` encoding
+* fixed seasonal-meridian encoding
+* learnable seasonal-CDF encoding
+* learnable seasonal-CDF encoding with an additional `RZ` component
 
 The experimental workflow includes:
 
-- ideal state-vector simulations across circuit depths 1–6 and five random seeds;
-- finite-shot, hardware-informed noisy simulations;
-- SPSA-to-Adam noisy-training workflows;
-- exact temporal-fidelity, spectral, and quantum-geometric analyses;
-- validation and aggregation scripts for the manuscript tables; and
-- portable Slurm entry points for HPC reproduction.
+* ideal state-vector simulations across circuit depths 1–6 and five random seeds;
+* topology-aware finite-shot noisy simulations using a frozen Aachen backend snapshot;
+* a preliminary FakeMelbourneV2 noise-model-only testing platform;
+* two-pass SPSA–Adam noisy-training workflows;
+* exact temporal-fidelity, spectral, and quantum-geometric analyses;
+* validation and aggregation scripts for the manuscript tables; and
+* portable Slurm entry points for HPC reproduction.
 
-The curated ideal study contains 150 completed runs: five encodings, six depths, and five seeds. Noisy Aachen simulations are still in progress, so noisy results will be added only after the corresponding experiment blocks and validation checks are complete.
+The curated ideal study contains 150 completed runs: five encodings, six depths, and five seeds. The Aachen simulations constitute the canonical noisy study for the manuscript and are still in progress, so their results will be added only after the corresponding experiment blocks and validation checks are complete.
 
 ## Repository layout
 
@@ -34,8 +35,8 @@ The curated ideal study contains 150 completed runs: five encodings, six depths,
 │   └── processed/                   # preprocessing configuration and metadata
 ├── data_reupload/
 │   ├── scripts/final_sweep/         # canonical ideal QNN training programs
-│   ├── noisy_direct14/              # finite-shot noisy workflows
-│   ├── noisy_aachen/                # Aachen backend snapshot and workers
+│   ├── noisy_direct14/              # FakeMelbourneV2 noise-only test platform
+│   ├── noisy_aachen/                # canonical Aachen noisy simulations
 │   ├── analysis/                    # forecasting, geometry, and validation analyses
 │   ├── report/                      # manuscript-asset generation
 │   └── slurm/                       # ideal and analysis Slurm entry points
@@ -49,6 +50,8 @@ The curated ideal study contains 150 completed runs: five encodings, six depths,
 
 The active paper implementation is at the repository root. Earlier LSTM-autoencoder and exploratory hybrid-QNN work is preserved under [`legacy/`](legacy/) for historical context and is not part of the canonical paper workflow.
 
+The `noisy_direct14/` name is retained to preserve existing experiment paths. It contains the preliminary FakeMelbourneV2 testing workflow, which applies a hardware-derived noise model and finite-shot sampling without enforcing the device coupling map. The manuscript’s canonical noisy simulations are under `noisy_aachen/`; they use the frozen Aachen calibration snapshot, native basis gates, coupling map, fixed physical-qubit layout, and topology-aware transpilation.
+
 ## Data
 
 The included study file is:
@@ -59,29 +62,29 @@ data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv
 
 The experiments use the monthly `precip_mm` series, chronological train/validation/test splitting, and input windows of length 14. Dataset provenance, integrity information, preprocessing rules, and split metadata are documented in:
 
-- [`data/raw/README.md`](data/raw/README.md)
-- [`docs/data.md`](docs/data.md)
-- [`data/processed/precip_mm_windowed_supervised/`](data/processed/precip_mm_windowed_supervised/)
+* [`data/raw/README.md`](data/raw/README.md)
+* [`docs/data.md`](docs/data.md)
+* [`data/processed/precip_mm_windowed_supervised/`](data/processed/precip_mm_windowed_supervised/)
 
-The dataset is included with permission from the contributing coauthor. It is not covered by the repository's MIT software license; see [`NOTICE.md`](NOTICE.md).
+The dataset is included with permission from the contributing coauthor. It is not covered by the repository’s MIT software license; see [`NOTICE.md`](NOTICE.md).
 
 ## Reproducing the work
 
 Start with [`docs/reproducibility.md`](docs/reproducibility.md). It describes three levels of execution:
 
 1. environment and import checks;
-2. representative ideal and noisy smoke runs; and
+2. representative ideal and preliminary FakeMelbourneV2 smoke runs; and
 3. full HPC reproduction through the supplied Slurm jobs.
 
 The mapping from each experiment family to its training code, scheduler entry point, analysis workflow, and curated outputs is provided in [`docs/experiment-map.md`](docs/experiment-map.md).
 
 Environment specifications include:
 
-- [`requirements_hpc.txt`](requirements_hpc.txt) for the ideal/HPC workflow;
-- [`data_reupload/noisy_direct14/scripts/requirements_noisy_qml_core.txt`](data_reupload/noisy_direct14/scripts/requirements_noisy_qml_core.txt) for the core noisy environment; and
-- exact environment snapshots under [`data_reupload/noisy_aachen/environment/`](data_reupload/noisy_aachen/environment/).
+* [`requirements_hpc.txt`](requirements_hpc.txt) for the ideal/HPC workflow;
+* [`data_reupload/noisy_direct14/scripts/requirements_noisy_qml_core.txt`](data_reupload/noisy_direct14/scripts/requirements_noisy_qml_core.txt) for the preliminary FakeMelbourneV2 test platform; and
+* exact environment snapshots under [`data_reupload/noisy_aachen/environment/`](data_reupload/noisy_aachen/environment/) for the canonical Aachen noisy simulations.
 
-All maintained Python and Slurm workflows resolve the repository through `QML_PROJECT_ROOT` when it is set and otherwise infer the root from the script location. This avoids dependence on a particular user's cluster path.
+All maintained Python and Slurm workflows resolve the repository through `QML_PROJECT_ROOT` when it is set and otherwise infer the root from the script location. This avoids dependence on a particular user’s cluster path.
 
 ## Results
 
@@ -93,15 +96,15 @@ See [`results/README.md`](results/README.md) for the publication-results policy.
 
 Software implementation and repository maintenance:
 
-- Devjyoti Tripathy — Department of Physics and Quantum Science Institute, University of Maryland, Baltimore County
+* Devjyoti Tripathy — Department of Physics and Quantum Science Institute, University of Maryland, Baltimore County
 
 Associated manuscript authors:
 
-- Devjyoti Tripathy
-- Reece Robertson
-- Josey Stevens
-- Catherine Lilian Nakalembe
-- Sebastian Deffner
+* Devjyoti Tripathy
+* Reece Robertson
+* Josey Stevens
+* Catherine Lilian Nakalembe
+* Sebastian Deffner
 
 The manuscript author list reflects the broader scientific collaboration. The software authorship metadata in [`CITATION.cff`](CITATION.cff) identifies Devjyoti Tripathy as the sole implementation contributor to this repository.
 
