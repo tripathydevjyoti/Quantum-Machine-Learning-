@@ -2,7 +2,7 @@
 
 **A 14-qubit quantum-neural-network study of seasonal geospatial forecasting, data-encoding geometry, circuit-depth degradation, and realistic device noise.**
 
-> **Project status:** The complete ideal study—150 independently trained QNNs—is available in this repository. Topology-aware noisy simulations using a frozen Aachen backend snapshot are currently running in production on HPC. The associated manuscript is in preparation.
+> **Project status:** The complete ideal study—150 independently trained QNNs—is available in this repository. Topology-aware noisy simulations using a frozen IBM Aachen backend snapshot are currently running in production on HPC. The associated manuscript is in preparation.
 
 ## Project at a glance
 
@@ -15,7 +15,7 @@
 | Circuit depths        | 1–6 reuploading layers                                                 |
 | Ideal experiments     | 5 encodings × 6 depths × 5 seeds = 150 runs                            |
 | Ideal simulator       | PennyLane `default.qubit` state-vector simulator                       |
-| Canonical noisy study | Finite-shot, topology-aware Fake Aachen simulations                    |
+| Canonical noisy study | Finite-shot, topology-aware IBM Fake Aachen simulations                    |
 | Noisy optimization    | SPSA followed by Adam refinement                                       |
 | Execution platform    | Slurm-based HPC arrays and parallel worker pools                       |
 | Current status        | Ideal study complete; noisy production runs and manuscript in progress |
@@ -59,7 +59,7 @@ After the final layer, the 14 local Pauli-\(Z\) expectation values are passed to
 
 ## Research question
 
-A conventional value-only encoding tells a quantum circuit how large an observation is, but not when in the seasonal cycle it occurred. For an approximately periodic geospatial signal, two similar precipitation values can have different predictive meanings depending on their calendar month.
+Regular angle encoding methods for embedding classical data into quantum circuits results in a degradation of the predictive and seasonal fourier structure with depth.
 
 This project asks:
 
@@ -159,7 +159,6 @@ Performance is summarized using four complementary metrics:
 
 * **Additional flexibility is not automatically beneficial.** Allowing the seasonal azimuth to adapt does not consistently improve upon learning the polar transformation alone.
 
-* **No quantum advantage is claimed.** The results isolate how encoding geometry and reuploading depth affect the behavior of a controlled QNN forecasting architecture.
 
 ## Noise-aware quantum simulation
 
@@ -191,7 +190,7 @@ These runs use:
 * topology-aware transpilation; and
 * two-pass SPSA-to-Adam training.
 
-The Aachen runs are currently executing in production through Slurm-based HPC workflows. Noisy results will be added to the publication-facing tables only after each required experiment block is complete and its validation checks pass. This avoids presenting incomplete seed or depth comparisons.
+The Aachen runs are currently executing in production through Slurm-based HPC workflows. Noisy results will be added to the tables only after each required experiment block is complete and its validation checks pass. This avoids presenting incomplete seed or depth comparisons.
 
 ## Study overview
 
