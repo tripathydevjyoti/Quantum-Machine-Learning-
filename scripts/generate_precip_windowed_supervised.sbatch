@@ -13,7 +13,7 @@
 
 set -euo pipefail
 
-PROJECT_ROOT="/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-"
+PROJECT_ROOT="${QML_PROJECT_ROOT:-${SLURM_SUBMIT_DIR:-$PWD}}"
 
 cd "$PROJECT_ROOT"
 
@@ -23,7 +23,7 @@ mkdir -p data/processed
 module purge
 module load Python/3.11.5-GCCcore-13.2.0
 
-source "$PROJECT_ROOT/venv_req/bin/activate"
+source "${QML_VENV:-${PROJECT_ROOT}/venv_req}/bin/activate"
 
 echo "===== JOB INFO ====="
 echo "HOST=$(hostname)"

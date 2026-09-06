@@ -8,17 +8,17 @@
 #SBATCH --cpus-per-task=32
 #SBATCH --mem=24G
 #SBATCH --array=0-44
-#SBATCH --output=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-/data_reupload/noisy_direct14/logs/seasonal_noisy_prod_%A_%a.out
-#SBATCH --error=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-/data_reupload/noisy_direct14/logs/seasonal_noisy_prod_%A_%a.err
+#SBATCH --output=data_reupload/noisy_direct14/logs/seasonal_noisy_prod_%A_%a.out
+#SBATCH --error=data_reupload/noisy_direct14/logs/seasonal_noisy_prod_%A_%a.err
 
 set -euo pipefail
 umask 027
 
-PROJECT_ROOT=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-
+PROJECT_ROOT="${QML_PROJECT_ROOT:-${SLURM_SUBMIT_DIR:-$PWD}}"
 NOISY_ROOT="$PROJECT_ROOT/data_reupload/noisy_direct14"
 
 SCRIPT="$NOISY_ROOT/scripts/direct14_noisy_seasonal_two_pass_worker_pool_hpc.py"
-CSV_PATH="$PROJECT_ROOT/data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv"
+CSV_PATH="${QML_DATA_PATH:-$PROJECT_ROOT/data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv}"
 OUTPUT_ROOT="$NOISY_ROOT/results"
 LOG_ROOT="$NOISY_ROOT/logs"
 METADATA_ROOT="$LOG_ROOT/production_metadata"
@@ -64,7 +64,7 @@ cd "$PROJECT_ROOT"
 
 module purge
 module load Python/3.11.5-GCCcore-13.2.0
-source "$PROJECT_ROOT/venv_noisy_qml/bin/activate"
+source "${QML_VENV:-${PROJECT_ROOT}/venv_noisy_qml}/bin/activate"
 
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1

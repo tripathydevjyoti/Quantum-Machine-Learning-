@@ -1,14 +1,26 @@
 from pathlib import Path
+import os
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
 
-REPO = Path(
-    "/umbc/rs/pi_deffner/users/devjyot1/projects/"
-    "Quantum-Machine-Learning-"
-)
+def _resolve_project_root() -> Path:
+    configured = os.environ.get("QML_PROJECT_ROOT")
+    if configured:
+        return Path(configured).expanduser().resolve()
+
+    for candidate in Path(__file__).resolve().parents:
+        if (candidate / "data_reupload").is_dir():
+            return candidate
+
+    raise RuntimeError(
+        "Could not locate the repository root; set QML_PROJECT_ROOT."
+    )
+
+
+REPO = _resolve_project_root()
 
 INPUT = (
     REPO

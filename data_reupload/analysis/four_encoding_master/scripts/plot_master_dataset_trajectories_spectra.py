@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from pathlib import Path
+import os
 
 import numpy as np
 import pandas as pd
@@ -15,10 +16,21 @@ import matplotlib.pyplot as plt
 # Paths
 # ============================================================
 
-PROJECT_ROOT = Path(
-    "/umbc/rs/pi_deffner/users/devjyot1/projects/"
-    "Quantum-Machine-Learning-"
-)
+def _resolve_project_root() -> Path:
+    configured = os.environ.get("QML_PROJECT_ROOT")
+    if configured:
+        return Path(configured).expanduser().resolve()
+
+    for candidate in Path(__file__).resolve().parents:
+        if (candidate / "data_reupload").is_dir():
+            return candidate
+
+    raise RuntimeError(
+        "Could not locate the repository root; set QML_PROJECT_ROOT."
+    )
+
+
+PROJECT_ROOT = _resolve_project_root()
 
 ANALYSIS_ROOT = (
     PROJECT_ROOT
@@ -32,10 +44,13 @@ FIG_DIR = ANALYSIS_ROOT / "output" / "figures"
 
 FIG_DIR.mkdir(parents=True, exist_ok=True)
 
-DATA_PATH = (
-    PROJECT_ROOT
-    / "data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv"
-)
+DATA_PATH = Path(
+    os.environ.get(
+        "QML_DATA_PATH",
+        PROJECT_ROOT
+        / "data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv",
+    )
+).expanduser().resolve()
 
 
 # ============================================================

@@ -17,9 +17,9 @@ set -euo pipefail
 # PROJECT PATHS
 # ============================================================
 
-PROJECT_ROOT="/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-"
-CACHE_ROOT="/umbc/rs/pi_deffner/users/devjyot1/cache"
-TMP_ROOT="/umbc/rs/pi_deffner/users/devjyot1/tmp"
+PROJECT_ROOT="${QML_PROJECT_ROOT:-${SLURM_SUBMIT_DIR:-$PWD}}"
+CACHE_ROOT="${QML_CACHE_ROOT:-${PROJECT_ROOT}/.cache}"
+TMP_ROOT="${QML_TMP_ROOT:-${TMPDIR:-${PROJECT_ROOT}/.tmp}}"
 
 SCRIPT="${PROJECT_ROOT}/data_reupload/scripts/final_sweep/train_final_single_qnn_seasonal_meridian.py"
 
@@ -34,10 +34,10 @@ cd "${PROJECT_ROOT}"
 module purge
 module load Python/3.11.5-GCCcore-13.2.0
 
-source venv_req/bin/activate
+source "${QML_VENV:-${PROJECT_ROOT}/venv_req}/bin/activate"
 
 # ============================================================
-# KEEP CACHE/TEMP DATA OUT OF /home/devjyot1
+# KEEP CACHE/TEMP DATA OUT OF THE HOME FILESYSTEM
 # ============================================================
 
 export XDG_CACHE_HOME="${CACHE_ROOT}/xdg"
@@ -97,7 +97,7 @@ if [[ ! -f "${SCRIPT}" ]]; then
     exit 10
 fi
 
-if [[ ! -f "data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv" ]]; then
+if [[ ! -f "${QML_DATA_PATH:-data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv}" ]]; then
     echo "ERROR: input CSV not found."
     exit 11
 fi
@@ -176,7 +176,7 @@ echo "==========================================================================
 # ============================================================
 
 /usr/bin/time -v python -u "${SCRIPT}" \
-    --csv_path "data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv" \
+    --csv_path "${QML_DATA_PATH:-data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv}" \
     --value_col 4 \
     --train_end_idx 434 \
     --window_size 14 \

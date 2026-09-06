@@ -7,12 +7,12 @@
 #SBATCH --time=00:15:00
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=4G
-#SBATCH --output=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-/data_reupload/noisy_direct14/logs/%x_%j.out
-#SBATCH --error=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-/data_reupload/noisy_direct14/logs/%x_%j.err
+#SBATCH --output=data_reupload/noisy_direct14/logs/%x_%j.out
+#SBATCH --error=data_reupload/noisy_direct14/logs/%x_%j.err
 
 set -euo pipefail
 
-PROJECT_ROOT=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-
+PROJECT_ROOT="${QML_PROJECT_ROOT:-${SLURM_SUBMIT_DIR:-$PWD}}"
 
 cd "$PROJECT_ROOT"
 
@@ -37,7 +37,7 @@ python --version
 
 echo
 echo "Activating venv_req:"
-source "$PROJECT_ROOT/venv_req/bin/activate"
+source "${QML_VENV:-${PROJECT_ROOT}/venv_req}/bin/activate"
 
 echo
 echo "Virtual environment:"

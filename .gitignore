@@ -31,8 +31,15 @@ env/
 
 # Logs and scheduler output
 *.log
+*.out
+*.err
 slurm-*.out
 slurm-*.err
+**/logs/
+
+# Local runtime caches and temporary files
+.cache/
+.tmp/
 
 # Temporary and archived copies
 *.backup

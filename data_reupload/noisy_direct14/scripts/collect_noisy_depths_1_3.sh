@@ -3,7 +3,7 @@
 set -euo pipefail
 umask 027
 
-PROJECT_ROOT="${QML_PROJECT_ROOT:-/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-}"
+PROJECT_ROOT="${QML_PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)}"
 NOISY_ROOT="$PROJECT_ROOT/data_reupload/noisy_direct14"
 SOURCE_RESULTS="$NOISY_ROOT/results"
 PAPER_RESULTS_ROOT="$PROJECT_ROOT/data_reupload/paper_results"
@@ -12,7 +12,7 @@ PACKAGE_ROOT="$PAPER_RESULTS_ROOT/$PACKAGE_NAME"
 RESULTS_ROOT="$PACKAGE_ROOT/results"
 ARCHIVE="$PAPER_RESULTS_ROOT/${PACKAGE_NAME}.tar.gz"
 CHECKSUM="$ARCHIVE.sha256"
-DATASET="$PROJECT_ROOT/data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv"
+DATASET="${QML_DATA_PATH:-$PROJECT_ROOT/data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv}"
 
 ENCODINGS=(
     seasonal_meridian

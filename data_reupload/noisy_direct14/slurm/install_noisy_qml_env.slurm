@@ -7,14 +7,14 @@
 #SBATCH --time=02:00:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
-#SBATCH --output=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-/data_reupload/noisy_direct14/logs/%x_%j.out
-#SBATCH --error=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-/data_reupload/noisy_direct14/logs/%x_%j.err
+#SBATCH --output=data_reupload/noisy_direct14/logs/%x_%j.out
+#SBATCH --error=data_reupload/noisy_direct14/logs/%x_%j.err
 
 set -euo pipefail
 
-PROJECT_ROOT=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-
+PROJECT_ROOT="${QML_PROJECT_ROOT:-${SLURM_SUBMIT_DIR:-$PWD}}"
 NOISY_ROOT="$PROJECT_ROOT/data_reupload/noisy_direct14"
-ENV_DIR="$PROJECT_ROOT/venv_noisy_qml"
+ENV_DIR="${QML_VENV:-${PROJECT_ROOT}/venv_noisy_qml}"
 REQ_FILE="$NOISY_ROOT/scripts/requirements_noisy_qml_core.txt"
 
 cd "$PROJECT_ROOT"

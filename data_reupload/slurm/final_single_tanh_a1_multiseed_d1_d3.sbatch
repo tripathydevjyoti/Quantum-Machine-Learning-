@@ -13,12 +13,12 @@
 
 set -euo pipefail
 
-PROJECT_ROOT=/umbc/rs/pi_deffner/users/devjyot1/projects/Quantum-Machine-Learning-
+PROJECT_ROOT="${QML_PROJECT_ROOT:-${SLURM_SUBMIT_DIR:-$PWD}}"
 cd "$PROJECT_ROOT"
 
 module purge
 module load Python/3.11.5-GCCcore-13.2.0
-source venv_req/bin/activate
+source "${QML_VENV:-${PROJECT_ROOT}/venv_req}/bin/activate"
 
 # 12 tasks:
 # task 0-2   -> seed 43, depths 1-3
@@ -61,7 +61,7 @@ fi
 
 /usr/bin/time -v python -u \
   data_reupload/scripts/final_sweep/train_final_single_qnn.py \
-  --csv_path "data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv" \
+  --csv_path "${QML_DATA_PATH:-data/raw/SPEI_AllScales_Napak - SPEI_AllScales_Napak.csv}" \
   --value_col 4 \
   --train_end_idx 434 \
   --window_size 14 \
