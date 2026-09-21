@@ -23,11 +23,11 @@ This gives 90 model runs and 9,450 prediction rows in total.
 
 ## Model outputs
 
-The hybrid quantum + classical model produces a final bounded output
+The hybrid quantum + classical model produces a final bounded output:
 
-$$
+```math
 z_{\mathrm{pred}} \in [-1,1]
-$$
+```
 
 In the CSV this is the column:
 
@@ -35,11 +35,9 @@ In the CSV this is the column:
 
 For the proposed inverse-CDF decoder, first map this value to the interval [0,1]:
 
-$$
-u_{\mathrm{pred}}
-=
-\frac{z_{\mathrm{pred}}+1}{2}
-$$
+```math
+u_{\mathrm{pred}} = \frac{z_{\mathrm{pred}} + 1}{2}
+```
 
 This value is already included in the CSV as:
 
@@ -47,13 +45,13 @@ This value is already included in the CSV as:
 
 The intended alternative decoding is then:
 
-$$
+```math
 y_{\mathrm{pred}}^{(\mathrm{inverse\ CDF})}
 =
 F^{-1}(u_{\mathrm{pred}})
-$$
+```
 
-where $F^{-1}$ is the inverse-CDF transformation being supplied separately.
+where `F^{-1}` is the inverse-CDF transformation being supplied separately.
 
 ---
 
@@ -65,22 +63,24 @@ During training, the forecast target itself was **not** transformed through the 
 
 Instead, the raw precipitation target was linearly scaled from the range [0,350] to [-1,1]:
 
-$$
+```math
 z_{\mathrm{true}}
 =
 -1
 +
-\frac{y_{\mathrm{raw}}-0}{350-0}
+\frac{y_{\mathrm{raw}} - 0}{350 - 0}
 \times 2
-$$
+```
 
 Equivalently,
 
-$$
+```math
 z_{\mathrm{true}}
 =
-2\frac{y_{\mathrm{raw}}}{350}-1
-$$
+2\frac{y_{\mathrm{raw}}}{350}
+-
+1
+```
 
 The model was trained to predict this linearly scaled target.
 
@@ -88,9 +88,12 @@ The empirical CDF transformation was used for the seasonal input encoding, not f
 
 Therefore, applying
 
-$$
-F^{-1}\left(\frac{z_{\mathrm{pred}}+1}{2}\right)
-$$
+```math
+F^{-1}
+\left(
+\frac{z_{\mathrm{pred}} + 1}{2}
+\right)
+```
 
 should be interpreted as a post-hoc decoder experiment rather than the exact inverse of the target transformation used during training.
 
@@ -100,7 +103,7 @@ should be interpreted as a post-hoc decoder experiment rather than the exact inv
 
 The training objective was mean squared error in the scaled target space:
 
-$$
+```math
 \mathcal{L}
 =
 \frac{1}{N}
@@ -110,7 +113,7 @@ z_{\mathrm{true},i}
 -
 z_{\mathrm{pred},i}
 \right)^2
-$$
+```
 
 The model output was bounded to [-1,1] using the output tanh.
 
@@ -122,14 +125,16 @@ The current raw-space prediction was obtained only after model evaluation using 
 
 The existing decoding step maps the model output from [-1,1] back to the raw precipitation range [0,350]:
 
-$$
+```math
 y_{\mathrm{pred}}^{(\mathrm{linear})}
 =
 175
 \left(
-z_{\mathrm{pred}}+1
+z_{\mathrm{pred}}
++
+1
 \right)
-$$
+```
 
 This value is included in the CSV as:
 
@@ -226,11 +231,11 @@ This is the model output prior to the current linear inverse scaling.
 
 Model prediction rescaled from [-1,1] to [0,1]:
 
-$$
+```math
 u_{\mathrm{pred}}
 =
-\frac{z_{\mathrm{pred}}+1}{2}
-$$
+\frac{z_{\mathrm{pred}} + 1}{2}
+```
 
 This is the quantity intended as input to the inverse-CDF function.
 
