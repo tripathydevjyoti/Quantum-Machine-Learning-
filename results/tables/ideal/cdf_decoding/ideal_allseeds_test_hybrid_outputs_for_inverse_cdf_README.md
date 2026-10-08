@@ -1,5 +1,28 @@
 # Ideal QNN Test Outputs for Inverse-CDF Decoding
 
+
+---
+
+## Empirical CDF reference file
+
+The accompanying file
+
+`training_reference_empirical_cdf.csv`
+
+contains the 364 training-only precipitation observations used to construct the empirical CDF for the seasonal input encoding.
+
+For reconstructing the CDF, the main columns of interest are:
+
+- `pp_raw`: raw precipitation value in millimeters
+- `cdf`: empirical CDF value assigned to that precipitation value
+
+The empirical CDF used in the production experiments was the right-continuous empirical CDF:
+
+```math
+F_{\mathrm{train}}(x)
+=
+\frac{\#\{y_s \le x\}}{364}
+
 ## Purpose
 
 This package contains held-out test-set outputs from the ideal/noiseless seasonal QNN forecasting experiments.
