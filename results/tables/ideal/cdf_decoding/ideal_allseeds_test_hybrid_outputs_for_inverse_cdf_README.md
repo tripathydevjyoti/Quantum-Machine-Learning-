@@ -1,35 +1,12 @@
 # Ideal QNN Test Outputs for Inverse-CDF Decoding
 
-
----
-
-## Empirical CDF reference file
-
-The accompanying file
-
-`training_reference_empirical_cdf.csv`
-
-contains the 364 training-only precipitation observations used to construct the empirical CDF for the seasonal input encoding.
-
-For reconstructing the CDF, the main columns of interest are:
-
-- `pp_raw`: raw precipitation value in millimeters
-- `cdf`: empirical CDF value assigned to that precipitation value
-
-The empirical CDF used in the production experiments was the right-continuous empirical CDF:
-
-```math
-F_{\mathrm{train}}(x)
-=
-\frac{\#\{y_s \le x\}}{364}
-
 ## Purpose
 
 This package contains held-out test-set outputs from the ideal/noiseless seasonal QNN forecasting experiments.
 
 The goal is to evaluate an alternative post-hoc decoding transformation based on the inverse of the empirical CDF used in the seasonal input encoding.
 
-The accompanying CSV is:
+The primary prediction file is:
 
 `ideal_allseeds_test_hybrid_outputs_for_inverse_cdf.csv`
 
@@ -42,6 +19,12 @@ It contains predictions from:
 
 This gives 90 model runs and 9,450 prediction rows in total.
 
+A second file,
+
+`training_reference_empirical_cdf.csv`
+
+contains the training-only precipitation reference used to construct the empirical CDF.
+
 ---
 
 ## Model outputs
@@ -52,14 +35,16 @@ The hybrid quantum + classical model produces a final bounded output:
 z_{\mathrm{pred}} \in [-1,1]
 ```
 
-In the CSV this is the column:
+In the prediction CSV, this is the column:
 
 `z_pred`
 
 For the proposed inverse-CDF decoder, first map this value to the interval [0,1]:
 
 ```math
-u_{\mathrm{pred}} = \frac{z_{\mathrm{pred}} + 1}{2}
+u_{\mathrm{pred}}
+=
+\frac{z_{\mathrm{pred}} + 1}{2}
 ```
 
 This value is already included in the CSV as:
@@ -74,7 +59,7 @@ y_{\mathrm{pred}}^{(\mathrm{inverse\ CDF})}
 F^{-1}(u_{\mathrm{pred}})
 ```
 
-where `F^{-1}` is the inverse-CDF transformation being supplied separately.
+where `F^{-1}` is constructed from the supplied empirical-CDF training reference.
 
 ---
 
@@ -153,17 +138,15 @@ y_{\mathrm{pred}}^{(\mathrm{linear})}
 =
 175
 \left(
-z_{\mathrm{pred}}
-+
-1
+z_{\mathrm{pred}} + 1
 \right)
 ```
 
-This value is included in the CSV as:
+This value is included in the prediction CSV as:
 
 `y_pred_linear`
 
-It is provided only as the current baseline decoder for comparison against the proposed inverse-CDF decoder.
+It is provided as the current baseline decoder for comparison against the proposed inverse-CDF decoder.
 
 ---
 
@@ -175,7 +158,7 @@ For the production setup:
 
 - window size = 14
 - training window count = 350
-- empirical-CDF reference observations = indices 0 through 363 inclusive
+- empirical-CDF reference observations = original time-series indices 0 through 363 inclusive
 - reference size = 364 observations
 
 The same frozen training reference is used for validation and test input encoding.
@@ -186,9 +169,109 @@ The three seasonal encodings included are:
 2. `learnable_seasonal_cdf`
 3. `learnable_seasonal_cdf_rz`
 
+All three use the same underlying empirical-CDF input preprocessing.
+
 ---
 
-## CSV columns
+## Empirical CDF reference file
+
+The accompanying file
+
+`training_reference_empirical_cdf.csv`
+
+contains the 364 training-only precipitation observations used to construct the empirical CDF for the seasonal input encoding.
+
+For reconstructing the CDF, the main columns of interest are:
+
+- `pp_raw`: raw precipitation value in millimeters
+- `cdf`: empirical CDF value assigned to that precipitation value
+
+The empirical CDF used in the production experiments was the right-continuous empirical CDF:
+
+```math
+F_{\mathrm{train}}(x)
+=
+\frac{\#\{y_s \le x\}}{364}
+```
+
+where the reference set consists of the first 364 observations of the original precipitation time series, corresponding to original indices 0 through 363 inclusive.
+
+The production implementation was:
+
+```python
+sorted_reference = np.sort(
+    training_reference.copy()
+)
+
+counts = np.searchsorted(
+    sorted_reference,
+    values,
+    side="right",
+)
+
+cdf = (
+    counts.astype(np.float64)
+    / float(len(sorted_reference))
+)
+```
+
+Here:
+
+- `training_reference` is the fixed 364-observation training-only precipitation reference set
+- `values` contains the raw precipitation values at which the empirical CDF is evaluated
+- `sorted_reference` is the same 364-value reference ordered from smallest to largest
+
+The CDF is therefore evaluated directly on raw precipitation values in millimeters.
+
+### Columns in `training_reference_empirical_cdf.csv`
+
+#### `original_index`
+
+Index of the observation in the original chronological precipitation time series.
+
+Values run from 0 through 363.
+
+#### `date`
+
+Date corresponding to the original precipitation observation.
+
+The reference spans January 1981 through April 2011.
+
+#### `pp_raw`
+
+Raw precipitation observation in millimeters.
+
+#### `cdf`
+
+Right-continuous empirical CDF evaluated at `pp_raw` using the fixed 364-observation reference:
+
+```math
+F_{\mathrm{train}}(x)
+=
+\frac{\#\{y_s \le x\}}{364}
+```
+
+#### `sorted_index`
+
+Zero-based position in a separately sorted view of the 364-value reference distribution.
+
+Values run from 0 through 363.
+
+#### `sorted_pp_raw`
+
+Precipitation value at the corresponding `sorted_index` after arranging all 364 reference observations from smallest to largest.
+
+The `sorted_index` and `sorted_pp_raw` columns form a separate sorted view of the same 364 observations. They should not be interpreted as corresponding row-by-row to `original_index`, `date`, or `pp_raw`.
+
+For reconstructing the forward empirical CDF, the primary columns are `pp_raw` and `cdf`. The `sorted_pp_raw` column additionally provides the ordered empirical reference distribution underlying the CDF and can be used when constructing the inverse-CDF transformation.
+
+---
+
+## Prediction CSV columns
+
+The following columns are contained in:
+
+`ideal_allseeds_test_hybrid_outputs_for_inverse_cdf.csv`
 
 ### `encoding`
 
@@ -264,13 +347,22 @@ This is the quantity intended as input to the inverse-CDF function.
 
 ### `y_pred_linear`
 
-Current prediction in the raw precipitation range obtained using the existing linear inverse scaling.
+Current prediction in the raw precipitation range obtained using the existing linear inverse scaling:
+
+```math
+y_{\mathrm{pred}}^{(\mathrm{linear})}
+=
+175
+\left(
+z_{\mathrm{pred}} + 1
+\right)
+```
 
 ---
 
 ## Requested inverse-CDF output
 
-Please apply the inverse-CDF function to:
+Please apply the inverse-CDF transformation to:
 
 `u_pred`
 
@@ -285,6 +377,18 @@ Please preserve all existing identifying columns so that predictions can be matc
 - seed
 - split position
 - target index
+
+The intended transformation is:
+
+```math
+y_{\mathrm{pred}}^{(\mathrm{inverse\ CDF})}
+=
+F^{-1}(u_{\mathrm{pred}})
+```
+
+using the empirical distribution supplied in:
+
+`training_reference_empirical_cdf.csv`
 
 ---
 
