@@ -1,0 +1,13 @@
+HEADER \usepackage{amsmath}
+HEADER \usepackage{xcolor}
+GATESIZE 15
+DEPTHPAD 3
+
+g W color=white
+
+g G $\text{Data Encoding}$ width=75 fill=yellow
+g G $\text{Trainable Unitary}$ width=85 fill=orange!75!white
+g G $\text{Ring Entanglement}$ width=90 fill=red
+g G $\text{Composite Unitary}$ width=90 fill=pink
+g G $\text{Pauli-Z Measurement}$ width=100 fill=green!75!black
+g G $\text{Classical Prediction}$ width=90 fill=blue!30!white
