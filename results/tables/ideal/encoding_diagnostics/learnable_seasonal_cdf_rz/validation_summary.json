@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "validated_runs": 30,
+  "expected_runs": 30,
+  "depths": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "max_truth_error_vs_model4": 0.0,
+  "max_checkpoint_npz_encoder_error": 0.0,
+  "max_phase_transform_error": 0.0,
+  "max_fixed_phase_error": 0.0,
+  "max_unwrapped_phase_error": 0.0,
+  "max_wrapped_phase_error": 0.0,
+  "phase_bound_rad": 0.2617993877991494,
+  "phase_bound_deg": 15.0,
+  "fft_fallback_run_count": 0
+}

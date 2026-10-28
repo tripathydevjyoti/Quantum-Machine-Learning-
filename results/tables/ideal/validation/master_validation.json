@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "expected_runs": 150,
+  "loaded_runs": 150,
+  "encodings": {
+    "ry": 30,
+    "same_scalar_rxryrz": 30,
+    "seasonal_meridian": 30,
+    "learnable_seasonal_cdf": 30,
+    "learnable_seasonal_cdf_rz": 30
+  },
+  "depths": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "train_target_count": 350,
+  "val_target_count": 70,
+  "test_target_count": 105,
+  "train_target_index_range": [
+    14,
+    363
+  ],
+  "val_target_index_range": [
+    364,
+    433
+  ],
+  "test_target_index_range": [
+    434,
+    538
+  ],
+  "all_truth_arrays_identical": true,
+  "all_target_indices_identical": true,
+  "max_scaled_truth_difference": 0.0,
+  "max_original_truth_difference": 0.0,
+  "max_metric_consistency_difference": 3.552713678800501e-15,
+  "max_spectral_band_reconstruction_error": 1.6653345369377348e-16,
+  "max_spectral_result_summary_difference": 0.0,
+  "fixed_encoding_parameter_formula": "42*L + 15",
+  "learnable_encoding_parameter_formula": "66*L + 15",
+  "learnable_extra_encoding_parameters": "24*L",
+  "cdf_reference_n": 364,
+  "season_period": 12
+}

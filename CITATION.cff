@@ -1,0 +1,58 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite the software repository and the
+  associated manuscript when it becomes available.
+title: "Quantum Learning for Geospatial Time Series: Seasonal Encoding and Noise-Aware Algorithms"
+type: software
+authors:
+  - given-names: Devjyoti
+    family-names: Tripathy
+    email: dtripathy@umbc.edu
+    affiliation: >-
+      Department of Physics and Quantum Science Institute, University of
+      Maryland, Baltimore County
+contact:
+  - given-names: Devjyoti
+    family-names: Tripathy
+    email: dtripathy@umbc.edu
+license: MIT
+repository-code: "https://github.com/tripathydevjyoti/Quantum-Machine-Learning-"
+keywords:
+  - quantum machine learning
+  - quantum neural networks
+  - time-series forecasting
+  - data re-uploading
+  - seasonal encoding
+  - noisy quantum simulation
+preferred-citation:
+  type: unpublished
+  title: "Quantum Learning for Geospatial Time Series: Seasonal Encoding and Noise-Aware Algorithms"
+  status: in-preparation
+  authors:
+    - given-names: Devjyoti
+      family-names: Tripathy
+      affiliation: >-
+        Department of Physics and Quantum Science Institute, University of
+        Maryland, Baltimore County
+    - given-names: Reece
+      family-names: Robertson
+      affiliation: >-
+        Department of Computer Science and Electrical Engineering, Department
+        of Physics, and Quantum Science Institute, University of Maryland,
+        Baltimore County
+    - given-names: Josey
+      family-names: Stevens
+      affiliation: >-
+        Department of Physics and Quantum Science Institute, University of
+        Maryland, Baltimore County
+    - given-names: Catherine Lilian
+      family-names: Nakalembe
+      affiliation: >-
+        Department of Geographical Sciences, University of Maryland, College
+        Park
+    - given-names: Sebastian
+      family-names: Deffner
+      orcid: "https://orcid.org/0000-0003-0504-6932"
+      affiliation: >-
+        Department of Physics and Quantum Science Institute, University of
+        Maryland, Baltimore County; National Quantum Laboratory, College Park

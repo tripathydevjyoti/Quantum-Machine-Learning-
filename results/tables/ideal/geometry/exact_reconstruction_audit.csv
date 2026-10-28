@@ -1,0 +1,5 @@
+encoding,depth,seed,n_test_windows,max_state_norm_error,max_scaled_prediction_error,max_original_prediction_error,max_strength_npz_difference,max_shift_npz_difference,status
+ry,6,42,105,3.9968028886505635e-15,6.106226635438361e-16,1.1368683772161603e-13,,,PASS
+same_scalar_rxryrz,6,42,105,8.548717289613705e-15,2.7755575615628914e-15,4.831690603168681e-13,,,PASS
+seasonal_meridian,6,42,105,5.10702591327572e-15,1.4710455076283324e-14,2.5721647034515627e-12,,,PASS
+learnable_seasonal_cdf,6,42,105,3.6637359812630166e-15,2.6645352591003757e-15,4.831690603168681e-13,0.0,0.0,PASS

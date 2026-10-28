@@ -1,0 +1,151 @@
+encoding,encoding_label,depth,seed,train_index_matches_expected,train_index_matches_reference,train_scaled_truth_max_abs_diff,train_original_truth_max_abs_diff,val_index_matches_expected,val_index_matches_reference,val_scaled_truth_max_abs_diff,val_original_truth_max_abs_diff,test_index_matches_expected,test_index_matches_reference,test_scaled_truth_max_abs_diff,test_original_truth_max_abs_diff,status
+ry,Standard Ry,1,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,1,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,1,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,1,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,1,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,2,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,2,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,2,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,2,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,2,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,3,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,3,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,3,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,3,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,3,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,4,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,4,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,4,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,4,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,4,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,5,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,5,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,5,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,5,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,5,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,6,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,6,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,6,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,6,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+ry,Standard Ry,6,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,1,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,1,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,1,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,1,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,1,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,2,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,2,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,2,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,2,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,2,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,3,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,3,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,3,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,3,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,3,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,4,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,4,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,4,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,4,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,4,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,5,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,5,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,5,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,5,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,5,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,6,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,6,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,6,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,6,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+same_scalar_rxryrz,Same-scalar RxRyRz,6,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,1,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,1,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,1,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,1,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,1,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,2,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,2,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,2,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,2,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,2,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,3,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,3,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,3,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,3,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,3,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,4,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,4,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,4,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,4,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,4,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,5,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,5,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,5,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,5,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,5,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,6,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,6,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,6,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,6,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+seasonal_meridian,Fixed seasonal CDF,6,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,1,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,1,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,1,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,1,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,1,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,2,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,2,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,2,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,2,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,2,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,3,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,3,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,3,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,3,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,3,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,4,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,4,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,4,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,4,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,4,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,5,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,5,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,5,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,5,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,5,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,6,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,6,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,6,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,6,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf,Learnable seasonal CDF,6,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,1,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,1,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,1,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,1,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,1,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,2,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,2,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,2,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,2,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,2,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,3,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,3,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,3,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,3,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,3,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,4,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,4,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,4,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,4,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,4,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,5,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,5,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,5,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,5,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,5,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,6,42,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,6,43,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,6,44,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,6,45,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS
+learnable_seasonal_cdf_rz,Learnable polar-azimuth seasonal CDF,6,46,True,True,0.0,0.0,True,True,0.0,0.0,True,True,0.0,0.0,PASS

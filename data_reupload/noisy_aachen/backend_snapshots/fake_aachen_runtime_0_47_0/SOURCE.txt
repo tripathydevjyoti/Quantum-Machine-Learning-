@@ -1,0 +1,6 @@
+backend=FakeAachen
+source_package=qiskit-ibm-runtime
+source_version=0.47.0
+wheel_filename=qiskit_ibm_runtime-0.47.0-py3-none-any.whl
+wheel_sha256=5115e5d2200cbbd1dd4d71cee473787632b46b14a933c75cd65115477fc6c93a
+installation_policy=wheel downloaded with --no-deps and not installed
