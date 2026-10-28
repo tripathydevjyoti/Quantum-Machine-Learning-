@@ -67,7 +67,7 @@ a b c d e f @ 2 6 color=black style=dashed fill=pink
 @ 1 6 % Layer 1
 @ 2 6 %% $\mathcal{W}_1(\boldsymbol\theta)$
 @ 7 8 % Layer 2
-@ 11 12 % Layer L
+@ 11 12 % Layer $L$
 @ 13 13 % Measure
 
 a b c d e f END
