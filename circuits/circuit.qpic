@@ -6,42 +6,41 @@ DEPTHPAD 3
 a W |0\rangle_1 \cdot\hspace{0.35cm}\cdot \cdot
 b W |0\rangle_2 \cdot\hspace{0.35cm}\cdot \cdot
 c W |0\rangle_3 \cdot\hspace{0.35cm}\cdot \cdot
-d W color=white height=20
-e W color=white height=6
-f W |0\rangle_q \cdot\hspace{0.35cm}\cdot \cdot
+d W \hspace{-1cm}\textcolor{black}{\vdots} height=20 color=white
+e W height=6 color=white
+f W |0\rangle_w \cdot\hspace{0.35cm}\cdot \cdot
 
-a b c f START
-d e TOUCH
+a b c d e f START
 
-a G $\mathcal{S}(x_1)$ width=30 fill=yellow
-b G $\mathcal{S}(x_2)$ width=30 fill=yellow
-c G $\mathcal{S}(x_3)$ width=30 fill=yellow
+a G $\mathcal{S}(x_1, \boldsymbol\theta^{\text{enc}}_1)$ width=53 fill=yellow
+b G $\mathcal{S}(x_2, \boldsymbol\theta^{\text{enc}}_1)$ width=53 fill=yellow
+c G $\mathcal{S}(x_3, \boldsymbol\theta^{\text{enc}}_1)$ width=53 fill=yellow
 d G $\textcolor{black}{\vdots}$ height=20 color=white
-f G $\mathcal{S}(x_q)$ width=30 fill=yellow
+f G $\mathcal{S}(x_w, \boldsymbol\theta^{\text{enc}}_1)$ width=53 fill=yellow
 
-a G $\text{Rot}(\theta)$ width=35 fill=orange!75!white
-b G $\text{Rot}(\theta)$ width=35 fill=orange!75!white
-c G $\text{Rot}(\theta)$ width=35 fill=orange!75!white
+a G $\text{Rot}(\boldsymbol\theta^{\text{var}}_1)$ width=45 fill=orange!75!white
+b G $\text{Rot}(\boldsymbol\theta^{\text{var}}_1)$ width=45 fill=orange!75!white
+c G $\text{Rot}(\boldsymbol\theta^{\text{var}}_1)$ width=45 fill=orange!75!white
 d G $\textcolor{black}{\vdots}$ height=20 color=white
-f G $\text{Rot}(\theta)$ width=35 fill=orange!75!white
+f G $\text{Rot}(\boldsymbol\theta^{\text{var}}_1)$ width=45 fill=orange!75!white
 
 a +b color=red
 b +c color=red
 d f TOUCH
 c color=red
-d G $\textcolor{black}{\vdots}$ height=20 color=white
+d G $\textcolor{red}{\vdots}$ height=20 color=white
 +f color=red
 f +a color=red
 
 a b c d e f TOUCH
 
-a G $\mathcal{S}(x_1)$ width=30 fill=yellow
-b G $\mathcal{S}(x_2)$ width=30 fill=yellow
-c G $\mathcal{S}(x_3)$ width=30 fill=yellow
+a G $\mathcal{S}(x_1, \boldsymbol\theta^{\text{enc}}_2)$ width=53 fill=yellow
+b G $\mathcal{S}(x_2, \boldsymbol\theta^{\text{enc}}_2)$ width=53 fill=yellow
+c G $\mathcal{S}(x_3, \boldsymbol\theta^{\text{enc}}_2)$ width=53 fill=yellow
 d G $\textcolor{black}{\vdots}$ height=20 color=white
-f G $\mathcal{S}(x_q)$ width=30 fill=yellow
+f G $\mathcal{S}(x_w, \boldsymbol\theta^{\text{enc}}_2)$ width=53 fill=yellow
 
-a b c d e f G $\mathcal{W}_2(\theta)$ width=35 fill=pink
+a b c d e f G $\mathcal{W}_2(\boldsymbol\theta^{\text{var}}_2)$ width=45 fill=pink
 
 a b c f END
 d e TOUCH
@@ -49,30 +48,31 @@ d e TOUCH
 a b c f START
 d e TOUCH
 
-a G $\mathcal{S}(x_1)$ width=30 fill=yellow
-b G $\mathcal{S}(x_2)$ width=30 fill=yellow
-c G $\mathcal{S}(x_3)$ width=30 fill=yellow
+a G $\mathcal{S}(x_1, \boldsymbol\theta^{\text{enc}}_L)$ width=53 fill=yellow
+b G $\mathcal{S}(x_2, \boldsymbol\theta^{\text{enc}}_L)$ width=53 fill=yellow
+c G $\mathcal{S}(x_3, \boldsymbol\theta^{\text{enc}}_L)$ width=53 fill=yellow
 d G $\textcolor{black}{\vdots}$ height=20 color=white
-f G $\mathcal{S}(x_q)$ width=30 fill=yellow
+f G $\mathcal{S}(x_w, \boldsymbol\theta^{\text{enc}}_L)$ width=53 fill=yellow
 
-a b c d e f G $\mathcal{W}_L(\theta)$ width=35 fill=pink
+a b c d e f G $\mathcal{W}_L(\boldsymbol\theta^{\text{var}}_L)$ width=45 fill=pink
 
 a M fill=green!75!black
 b M fill=green!75!black
 c M fill=green!75!black
+d G $\textcolor{black}{\vdots}$ height=20 color=white
 f M fill=green!75!black
 
 a b c d e f @ 3 6
 a b c d e f @ 2 6 color=black style=dashed fill=pink
 @ 1 6 % Layer 1
-@ 2 6 %% $\mathcal{W}_1(\theta)$
+@ 2 6 %% $\mathcal{W}_1(\boldsymbol\theta)$
 @ 7 8 % Layer 2
 @ 11 12 % Layer L
 @ 13 13 % Measure
 
 a b c d e f END
-a b c f W >\cdots
+a b c f W >\textbf{z}\cdots
 c START
 
-c G $\hat{y}_{t+1} = \tanh(\textbf{w}_{cl}^T\textbf{z}+b)$ width=100 fill=blue!30!white
-c G $\hat{y}_{t+1}$ width=25 fill=blue!30!white
+c G $\widehat{y}_{t+1} = \tanh(\textbf{w}^T\textbf{z}+b)$ width=100 fill=blue!30!white
+# c G $\widehat{y}_{t+1}$ width=25 fill=blue!30!white
